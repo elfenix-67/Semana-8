@@ -143,7 +143,6 @@ void ordenar_productos_alfabetico(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int c
             }
         }
     }
-        mostrar_producto_mayor_cantidad(nombres, cantidades, recursos, tiempos, totalProductos);
 }
 
 void ordenar_productos_por_cantidad(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades[MAX_PRODUCTOS], 
@@ -171,8 +170,6 @@ void ordenar_productos_por_cantidad(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int
             }
         }
     }
-    
-    mostrar_producto_mayor_cantidad(nombres, cantidades, recursos, tiempos, totalProductos);
 }
 
 void mostrar_producto_mayor_cantidad(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades[MAX_PRODUCTOS], 
