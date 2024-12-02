@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,19 +49,19 @@ void ingresar_producto(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades[M
 
     printf("Ingrese la cantidad (solo numeros): ");
     while (scanf("%d", &cantidad) != 1 || cantidad <= 0) {
-        printf("Entrada invalida. Ingrese un número entero positivo: ");
+        printf("Entrada invalida. Ingrese un numero entero positivo: ");
         while (getchar() != '\n'); 
     }
 
     printf("Ingrese el recurso necesario: ");
     while (scanf("%f", &recurso) != 1 || recurso <= 0) {
-        printf("Entrada inválida. Ingrese un número positivo: ");
+        printf("Entrada invalida. Ingrese un numero positivo: ");
         while (getchar() != '\n'); 
     }
 
-    printf("Ingrese el tiempo de producción: ");
+    printf("Ingrese el tiempo de produccion: ");
     while (scanf("%f", &tiempo) != 1 || tiempo <= 0) {
-        printf("Entrada inválida. Ingrese un número positivo: ");
+        printf("Entrada invalida. Ingrese un numero positivo: ");
         while (getchar() != '\n'); 
     }
 
@@ -71,7 +71,7 @@ void ingresar_producto(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades[M
     tiempos[*totalProductos] = tiempo;
 
     (*totalProductos)++;
-    printf("Producto agregado con éxito.\n");
+    printf("Producto agregado con exito.\n");
 
     while (getchar() != '\n'); 
 }
@@ -82,7 +82,7 @@ void mostrar_productos(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades[M
     }
 
     printf("+----------------------+----------+----------+----------+\n");
-    printf("| Nombre del producto | Cantidad | Recursos | Tiempo   |\n");
+    printf("| Nombre del producto  | Cantidad | Recursos | Tiempo   |\n");
     printf("+----------------------+----------+----------+----------+\n");
     for (int i = 0; i < totalProductos; i++) {
         printf("| %-20s | %8d | %8.2f | %8.2f |\n", nombres[i], cantidades[i], recursos[i], tiempos[i]);
@@ -115,6 +115,82 @@ void calcular_produccion(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades
         printf("No es posible cumplir con la demanda.\n");
     }
 }
+void ordenar_productos_alfabetico(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades[MAX_PRODUCTOS], 
+                                  float recursos[MAX_PRODUCTOS], float tiempos[MAX_PRODUCTOS], int totalProductos) {
+    for (int i = 0; i < totalProductos - 1; i++) {
+        for (int j = i + 1; j < totalProductos; j++) {
+            if (strcmp(nombres[i], nombres[j]) > 0) {
+                // Intercambiar nombres
+                char temp_nombre[MAX_NOMBRE];
+                strcpy(temp_nombre, nombres[i]);
+                strcpy(nombres[i], nombres[j]);
+                strcpy(nombres[j], temp_nombre);
+
+                // Intercambiar cantidades
+                int temp_cantidad = cantidades[i];
+                cantidades[i] = cantidades[j];
+                cantidades[j] = temp_cantidad;
+
+                // Intercambiar recursos
+                float temp_recurso = recursos[i];
+                recursos[i] = recursos[j];
+                recursos[j] = temp_recurso;
+
+                // Intercambiar tiempos
+                float temp_tiempo = tiempos[i];
+                tiempos[i] = tiempos[j];
+                tiempos[j] = temp_tiempo;
+            }
+        }
+    }
+        mostrar_producto_mayor_cantidad(nombres, cantidades, recursos, tiempos, totalProductos);
+}
+
+void ordenar_productos_por_cantidad(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades[MAX_PRODUCTOS], 
+                                    float recursos[MAX_PRODUCTOS], float tiempos[MAX_PRODUCTOS], int totalProductos, int orden) {
+    for (int i = 0; i < totalProductos - 1; i++) {
+        for (int j = i + 1; j < totalProductos; j++) {
+            int condicion = (orden == 1) ? (cantidades[i] < cantidades[j]) : (cantidades[i] > cantidades[j]);
+            if (condicion) {
+                char temp_nombre[MAX_NOMBRE];
+                strcpy(temp_nombre, nombres[i]);
+                strcpy(nombres[i], nombres[j]);
+                strcpy(nombres[j], temp_nombre);
+
+                int temp_cantidad = cantidades[i];
+                cantidades[i] = cantidades[j];
+                cantidades[j] = temp_cantidad;
+
+                float temp_recurso = recursos[i];
+                recursos[i] = recursos[j];
+                recursos[j] = temp_recurso;
+
+                float temp_tiempo = tiempos[i];
+                tiempos[i] = tiempos[j];
+                tiempos[j] = temp_tiempo;
+            }
+        }
+    }
+    
+    mostrar_producto_mayor_cantidad(nombres, cantidades, recursos, tiempos, totalProductos);
+}
+
+void mostrar_producto_mayor_cantidad(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades[MAX_PRODUCTOS], 
+                                      float recursos[MAX_PRODUCTOS], float tiempos[MAX_PRODUCTOS], int totalProductos) {
+    int maxIndex = 0;
+    for (int i = 1; i < totalProductos; i++) {
+        if (cantidades[i] > cantidades[maxIndex]) {
+            maxIndex = i;
+        }
+    }
+
+    printf("\nProducto con mas unidades:\n");
+    printf("Nombre: %s\n", nombres[maxIndex]);
+    printf("Cantidad: %d\n", cantidades[maxIndex]);
+    printf("Recurso necesario: %.2f\n", recursos[maxIndex]);
+    printf("Tiempo de producción: %.2f\n", tiempos[maxIndex]);
+}
+
 void editar_producto(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades[MAX_PRODUCTOS], float recursos[MAX_PRODUCTOS], float tiempos[MAX_PRODUCTOS], int totalProductos) {
     if (totalProductos == 0) {
         printf("No hay productos registrados.\n");
@@ -124,34 +200,34 @@ void editar_producto(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades[MAX
     }
 
     int index;
-    printf("Ingrese el índice del producto a editar (1-%d): ", totalProductos);
+    printf("Ingrese el indice del producto a editar (1-%d): ", totalProductos);
     while (scanf("%d", &index) != 1 || index < 1 || index > totalProductos) {
-        printf("Índice inválido. Ingrese un número entre 1 y %d: ", totalProductos);
+        printf("Indice invalido. Ingrese un numero entre 1 y %d: ", totalProductos);
         while (getchar() != '\n'); 
     }
 
-    index--; // Ajustar a índice del arreglo
+    index--;
 
     printf("\n--- Editar producto: %s ---\n", nombres[index]);
 
     int nuevaCantidad;
     printf("Ingrese nueva cantidad: ");
     while (scanf("%d", &nuevaCantidad) != 1 || nuevaCantidad <= 0) {
-        printf("Cantidad inválida. Intente de nuevo: ");
+        printf("Cantidad invalida. Intente de nuevo: ");
         while (getchar() != '\n');
     }
 
     float nuevoRecurso;
     printf("Ingrese nuevo recurso necesario: ");
     while (scanf("%f", &nuevoRecurso) != 1 || nuevoRecurso <= 0) {
-        printf("Recurso inválido. Intente de nuevo: ");
+        printf("Recurso invalido. Intente de nuevo: ");
         while (getchar() != '\n');
     }
 
     float nuevoTiempo;
-    printf("Ingrese nuevo tiempo de producción: ");
+    printf("Ingrese nuevo tiempo de produccion: ");
     while (scanf("%f", &nuevoTiempo) != 1 || nuevoTiempo <= 0) {
-        printf("Tiempo inválido. Intente de nuevo: ");
+        printf("Tiempo invalido. Intente de nuevo: ");
         while (getchar() != '\n');
     }
 
@@ -159,7 +235,7 @@ void editar_producto(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades[MAX
     recursos[index] = nuevoRecurso;
     tiempos[index] = nuevoTiempo;
 
-    printf("\nProducto '%s' editado con éxito.\n", nombres[index]);
+    printf("\nProducto '%s' editado con exito.\n", nombres[index]);
     printf("Presione Enter para continuar...");
     while (getchar() != '\n');
 }
@@ -173,24 +249,20 @@ void eliminar_producto(char nombres[MAX_PRODUCTOS][MAX_NOMBRE], int cantidades[M
     }
 
     int index;
-    printf("Ingrese el índice del producto a eliminar (1-%d): ", *totalProductos);
+    printf("Ingrese el indice del producto a eliminar (1-%d): ", *totalProductos);
     while (scanf("%d", &index) != 1 || index < 1 || index > *totalProductos) {
-        printf("Índice inválido. Ingrese un número entre 1 y %d: ", *totalProductos);
+        printf("Indice invalido. Ingrese un número entre 1 y %d: ", *totalProductos);
         while (getchar() != '\n');
     }
-
-    index--; // Ajustar a índice del arreglo
-
-    // Mover elementos para eliminar el producto
+    index--; 
     for (int i = index; i < (*totalProductos) - 1; i++) {
         strcpy(nombres[i], nombres[i + 1]);
         cantidades[i] = cantidades[i + 1];
         recursos[i] = recursos[i + 1];
         tiempos[i] = tiempos[i + 1];
     }
-
-    (*totalProductos)--; // Reducir el contador
-    printf("Producto eliminado con éxito.\n");
+    (*totalProductos)--; 
+    printf("Producto eliminado con exito.\n");
     printf("Presione Enter para continuar...");
     while (getchar() != '\n');
 }
