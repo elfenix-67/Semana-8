@@ -54,14 +54,14 @@ int main() {
         printf("6. Salir\n");
         printf("Ingrese una opcion: ");
         scanf("%d", &opcion);
-        while (getchar() != '\n');  // Limpiar buffer de entrada
+        while (getchar() != '\n');  
 
         limpiar_pantalla();
 
         if (opcion == 1) {
             ingresar_producto(nombres, cantidades, recursos, tiempos, &totalProductos);
             printf("\nProducto ingresado correctamente. Presione Enter para continuar...");
-            while (getchar() != '\n');  // Esperar que el usuario presione Enter
+            while (getchar() != '\n'); 
         } else if (opcion == 2) {
             int subopcion;
             do {
@@ -82,15 +82,12 @@ int main() {
                 } else if (subopcion == 2) {
                     limpiar_pantalla();
                     ordenar_productos_alfabetico(nombres, cantidades, recursos, tiempos, totalProductos);
-                    mostrar_productos(nombres, cantidades, recursos, tiempos, totalProductos);
                 } else if (subopcion == 3) {
                     limpiar_pantalla();
                     ordenar_productos_por_cantidad(nombres, cantidades, recursos, tiempos, totalProductos, 1);
-                    mostrar_productos(nombres, cantidades, recursos, tiempos, totalProductos);
                 } else if (subopcion == 4) {
                     limpiar_pantalla();
                     ordenar_productos_por_cantidad(nombres, cantidades, recursos, tiempos, totalProductos, 0);
-                    mostrar_productos(nombres, cantidades, recursos, tiempos, totalProductos);
                 } else if (subopcion == 5) {
                     printf("Volviendo al menu principal...\n");
                 } else {
